@@ -129,3 +129,21 @@ In the end we need to add:
 13. Create intermediate and marts models.
 14. Run the `dbt build` command in the dbt project directory to build the created models and run tests for them. In case everything was done correctly in the previous steps, you should see the `Completed successfully` message as a result of the command, created views in database for the staging and intermediate models, and created tables for the marts models.
     dbt build result(/assets/dbt_build_result.png)
+
+### Task 4: Add `pre-commit` to our repo
+1. We can use the `pre-commit` framework to add pre-commit hooks for checking our YAML files and models for linting in a dbt project.
+2. Create a new branch using `git checkout` command.
+3. Activate your virtual environment (if it was deactivated).
+4. Install `pre-commit`:
+    ```
+    pip install pre-commit
+    ```
+4. Create a `.pre-commit-config.yaml` file in the root of your local repo
+4. Install the `pre-commit` hooks:
+    ```
+    pre-commit install
+    ```
+5. Run the hooks on all files (optional but recommended for the first time):
+    ```
+    pre-commit run --all-files
+    ```
