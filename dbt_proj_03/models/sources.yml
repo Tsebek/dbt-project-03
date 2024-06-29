@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: s3_fivetran
+    tables:
+      - name: superstore
+        identifier: superstore
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 24, period: hour}
