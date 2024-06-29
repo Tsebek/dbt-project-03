@@ -74,3 +74,58 @@ TBD
     - Start initial sync.
     fivetran(/assets/fivetran.png)
 6. Fivetran creates schema and table with your dataset in the database.
+
+### Task 3: Create a new dbt project and models
+1. Switch to the main branch `git checkout main` and pull all changes from remote repo `git pull origin main`.
+2. Create a new virtual environment in the folder with project using command:
+    ```
+    # for MacOS
+
+    python3 -m venv <your-environment-name>
+
+    # activate environment
+    source venv/bin/activate
+    ```
+3. Install dbt adapter:
+    ```
+    # choose the right command for your database
+    pip install dbt-core dbt-postgres
+    ```
+4. Initialize dbt project:
+    ```
+    dbt init <your-project-name>
+    ```
+5. This command create dbt project and you can see a new folder with project. Now we need to define `profiles.yml` for our dbt project. Default path for is `~/.dbt`, but we create a new `profiles.yml` file in the folder with dbt project and setup connection.
+6. It's a best practice to use `env_var` function to incorporate Environment Variables from the system into your dbt project in order to increase security. There are plenty of approaches how to store Environment Variables. We choose to store it in the `activate` script and add folder with python virtual environment into `.gitignore` file.
+In the end we need to add:
+    ```
+    export DBT_ENV_SECRET_HOST=<your-host-name>
+    export DBT_ENV_SECRET_USER=<your-user-name>
+    export DBT_ENV_SECRET_PASSWORD=<your-password>
+    export DBT_ENV_SECRET_DBNAME=<your-dbname>
+    ```
+    > Any env var named with the prefix `DBT_ENV_SECRET` will be scrubbed from dbt logs and replaced with `*****`, any time its value appears in those logs.
+7. Specify `profiles` directiory for dbt project:
+    ```
+    export DBT_PROFILES_DIR='path/to/your/profiles'
+    ```
+8. Check connection using command:
+    ```
+    dbt debug
+    ```
+    dbt debug result(/assets/dbt_debug_result.png)
+9. Push all changes to the remote repo:
+    ```
+    git add .
+    git commit -m "your-comment"
+    git push origin main
+    ```
+10. All models and changes with the dbt project we are going to do in the `feature` branches. Create new branch:
+    ```
+    git checkout -b your-branch-name
+    ```
+11. Navigate to the folder with dbt project. Create folders in the `models` for each level: staging, intermediate, marts. Define `sources.yml` to specify the source table. Additionally, we can add a `freshness` block to our source and `loaded_at_field` to check source freshness. In the `freshness` block, one or both of `warn_after` and `error_after` can be provided. The `loaded_at_field` is required to calculate freshness for a table.
+12. Create staging models. We are creating 3 models: orders, people and returns. We choose materialization as `view` for staging and specify all types for other levels it in the `dbt_project.yml`.
+13. Create intermediate and marts models.
+14. Run the `dbt build` command in the dbt project directory to build the created models and run tests for them. In case everything was done correctly in the previous steps, you should see the `Completed successfully` message as a result of the command, created views in database for the staging and intermediate models, and created tables for the marts models.
+    dbt build result(/assets/dbt_build_result.png)
