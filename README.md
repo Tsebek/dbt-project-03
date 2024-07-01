@@ -169,3 +169,4 @@ In the end we need to add:
     dbt docs serve
     ```
 7. Optionally, we can add Unit tests (supported only in dbt Core 1.8+), custom aliases to our models, tags (e.g., filter by tags in the dbt docs lineage), and defer feature (need to learn more about dbt artifacts).
+8. We can add GitHub Actions to improve our CI. In the directory with GitHub repo we need to create YML file and put it in the path `.github/workflows/`. Also, we need to create file `requirements.txt` in the root directory of your repo. 
