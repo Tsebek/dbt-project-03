@@ -1,0 +1,31 @@
+name: Pre-commit checks
+
+on:
+  pull_request:
+    branches:
+      - main  # or the branch you want to protect
+  push:
+    branches:
+      - main  # or the branch you want to protect
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'  # Use the same version as specified in your pre-commit config
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt  # If you have additional requirements
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files
