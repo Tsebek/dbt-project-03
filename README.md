@@ -17,6 +17,7 @@ TBD
 2. Upload dataset
 3. Create a new dbt project and models
 4. Add `pre-commit` to our repo
+5. dbt project upgrade
 
 ### Task 1: Create a new git repo and branch
 1. Create a new git repo (add `README` and `.gitignore`).
@@ -138,12 +139,33 @@ In the end we need to add:
     ```
     pip install pre-commit
     ```
-4. Create a `.pre-commit-config.yaml` file in the root of your local repo
-4. Install the `pre-commit` hooks:
+5. Create a `.pre-commit-config.yaml` file in the root of your local repo
+6. Install the `pre-commit` hooks:
     ```
     pre-commit install
     ```
-5. Run the hooks on all files (optional but recommended for the first time):
+7. Run the hooks on all files (optional but recommended for the first time):
     ```
     pre-commit run --all-files
     ```
+8. Add all changes and commit to the remote repo. Push your feature branch.
+
+### Task 5: dbt project upgrade
+1. Make sure that you have DEV and PROD profile in the `profiles.yml`. You can run dbt models on PROD environment using `--target=prod`:
+    ```
+    dbt run --target=prod
+    ```
+2. We can add the dbt freshness test in the `sources.yml` and run command `dbt source freshness` to check.
+3. We can add more dbt tests to the models. There are 2 types of tests in dbt: singular and generic.
+    - For singular tests you can create `.sql` file in the tests directory (by default folder `tests`). Test is the SQL query. If the query returns result, then test fails. We'd like to check that sales amount is always positive number. Let's create SQL query where we try to get rows with `sales` < 0.
+    - For generic tests you can add `macro` or built-in tests. Built-in tests (`unique`, `not_null`, `accepted_values` and `relationships`) we can add `schema.yml` file in the directory with models, and add some tests. In addition, we can create `.sql` file in the directory with macro (e.g., `macros/tests/test_positive_values.sql`) and check column on positive values like we did with `sales`. Then we can add this `macro` to the `schema.yml` file for columns `quantity` and `discount`.
+4. We can add `meta` tags for extra information. It's useful for documentation. In the `dbt_project.yml` add `meta` config.
+5. We can add description block in a separate file, if we want to create a long description:
+    - Add file `docs.md` in the directory with models.
+    - Add reference to this `docs.md` in your `description` block in `schema.yml` (e.g., model `stg__people`, column `region`).
+6. We can build docs and see descriptions and tags:
+    ```
+    dbt docs generate
+    dbt docs serve
+    ```
+7. Optionally, we can add Unit tests (supported only in dbt Core 1.8+), custom aliases to our models, tags (e.g., filter by tags in the dbt docs lineage), and defer feature (need to learn more about dbt artifacts).
