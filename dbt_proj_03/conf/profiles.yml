@@ -1,0 +1,16 @@
+# prod profiles.yml
+
+dbt_proj_03:
+  target: prod
+  outputs:
+    prod:
+      type: postgres
+      host: "{{ env_var('DBT_ENV_SECRET_HOST') }}"
+      user: "{{ env_var('DBT_ENV_SECRET_USER') }}"
+      password: "{{ env_var('DBT_ENV_SECRET_PASSWORD') }}"
+      port: 5432
+      dbname: "{{ env_var('DBT_ENV_SECRET_DBNAME') }}"
+      schema: prod
+      threads: 4
+      keepalives_idle: 300 # default 0, indicating the system default
+      connect_timeout: 10 # default 10 seconds

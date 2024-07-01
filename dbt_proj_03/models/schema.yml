@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: stg__orders
+    columns:
+      - name: row_id
+        tests:
+          - unique
+          - not_null
+      - name: postal_code
+        tests:
+          - not_null
+      - name: discount
+        tests:
+          - positive_values
+      - name: quantity
+        tests:
+          - positive_values
+
+  - name: stg__people
+    description: This table has list of managers and their regions
+
+    columns:
+      - name: region
+        description: '{{ doc("managers_region") }}'

@@ -39,7 +39,11 @@ SELECT
     country,
     city,
     state,
-    region, -- clean piece of data
+    CASE
+        WHEN city = 'Burlington' AND postal_code IS NULL THEN '05401'
+        ELSE postal_code
+    END AS postal_code, -- clean piece of data
+    region,
     product_id,
     category AS product_category,
     sub_category AS product_subcategory,
@@ -47,9 +51,5 @@ SELECT
     sales,
     quantity,
     discount,
-    profit,
-    CASE
-        WHEN city = 'Burlington' AND postal_code IS NULL THEN '05401'
-        ELSE postal_code
-    END AS postal_code
+    profit
 FROM raw_superstore
