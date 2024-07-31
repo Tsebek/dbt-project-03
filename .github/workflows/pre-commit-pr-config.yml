@@ -29,6 +29,20 @@ jobs:
           pip install -r requirements.txt  # If you have additional requirements
           pip install dbt
 
+      - name: Set up dbt Cloud credentials
+        run: |
+          mkdir -p ~/.dbt
+          echo "$DBT_CLOUD_CREDENTIALS" > ~/.dbt/dbt_cloud.yml
+        env:
+          DBT_CLOUD_CREDENTIALS: ${{ secrets.DBT_CLOUD_CREDENTIALS }}
+
+      - name: Export dbt environment variables
+        run: |
+          echo "DBT_ENV_SECRET_HOST=${{ secrets.DBT_ENV_SECRET_HOST }}" >> $GITHUB_ENV
+          echo "DBT_ENV_SECRET_USER=${{ secrets.DBT_ENV_SECRET_USER }}" >> $GITHUB_ENV
+          echo "DBT_ENV_SECRET_PASSWORD=${{ secrets.DBT_ENV_SECRET_PASSWORD }}" >> $GITHUB_ENV
+          echo "DBT_ENV_SECRET_DBNAME=${{ secrets.DBT_ENV_SECRET_DBNAME }}" >> $GITHUB_ENV
+
       - name: Run dbt compile
         run: |
           cd dbt_proj_03
