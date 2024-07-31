@@ -43,6 +43,9 @@ jobs:
           echo "DBT_ENV_SECRET_PASSWORD=${{ secrets.DBT_ENV_SECRET_PASSWORD }}" >> $GITHUB_ENV
           echo "DBT_ENV_SECRET_DBNAME=${{ secrets.DBT_ENV_SECRET_DBNAME }}" >> $GITHUB_ENV
 
+      - name: Set DBT_PROFILES_DIR
+        run: echo "DBT_PROFILES_DIR=$(pwd)/dbt_proj_03" >> $GITHUB_ENV
+
       - name: Run dbt compile
         run: |
           cd dbt_proj_03
