@@ -31,7 +31,8 @@ jobs:
 
       - name: Run dbt compile
         run: |
-          dbt compile --project-dir dbt_proj_03
+          cd dbt_proj_03
+          dbt compile
 
       - name: Run pre-commit
         run: pre-commit run --all-files
