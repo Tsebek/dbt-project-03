@@ -27,6 +27,11 @@ jobs:
           pip install pre-commit
           pip install sqlfluff dbt-core==1.8.3 dbt-postgres==1.8.2
           pip install -r requirements.txt  # If you have additional requirements
+          pip install dbt
+
+      - name: Run dbt compile
+        run: |
+          dbt compile --project-dir dbt_proj_03
 
       - name: Run pre-commit
         run: pre-commit run --all-files
