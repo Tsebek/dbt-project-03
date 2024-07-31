@@ -1,0 +1,16 @@
+# .sqlfluff
+[sqlfluff]
+# Specify the SQL dialect being used (e.g., postgres, ansi, etc.)
+dialect = postgres
+
+# Set maximum line length for SQL files at the root level
+max_line_length = 80
+
+# Set indentation configuration
+[sqlfluff:indentation]
+tab_space_size = 4
+
+# Correctly configure capitalisation.keywords
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower
+ignore_words = []

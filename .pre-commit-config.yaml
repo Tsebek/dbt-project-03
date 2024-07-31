@@ -1,6 +1,83 @@
+# repos:
+#   - repo: https://github.com/pre-commit/pre-commit-hooks
+#     rev: v4.6.0  # Use the latest version
+#     hooks:
+#       - id: check-yaml
+#       - id: end-of-file-fixer
+
+# Pre-commit that runs locally
+fail_fast: false
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0  # Use the latest version
+    rev: v4.5.0
     hooks:
+      - id: trailing-whitespace
       - id: check-yaml
-      - id: end-of-file-fixer
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        files: '\.(yaml|yml)$'
+
+  # Disable sqlfmt if it conflicts with sqlfluff
+  # - repo: https://github.com/tconbeer/sqlfmt
+  #   rev: v0.21.2
+  #   hooks:
+  #     - id: sqlfmt
+  #       name: SQL formatter
+  #       language_version: python
+  #       additional_dependencies: [".[jinjafmt]"]
+
+  - repo: https://github.com/psf/black
+    rev: 24.1.1
+    hooks:
+      - id: black
+        language_version: python3.11
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 3.7.9
+    hooks:
+      - id: flake8
+
+  - repo: https://github.com/dbt-checkpoint/dbt-checkpoint
+    rev: v1.2.0
+    hooks:
+      - id: check-model-has-description
+        args: ["--manifest", "dbt_proj_03/target/manifest.json"]
+        pass_filenames: false
+      - id: check-model-has-tests-by-group
+        args:
+          [
+            "--tests",
+            "not_null",
+            "--test-cnt",
+            "1",
+            "--manifest",
+            "dbt_proj_03/target/manifest.json",
+          ]
+        pass_filenames: false
+      - id: check-model-has-tests-by-group
+        args:
+          [
+            "--tests",
+            "unique",
+            "unique_combination_of_columns",
+            "--test-cnt",
+            "1",
+            "--manifest",
+            "dbt_proj_03/target/manifest.json",
+          ]
+        pass_filenames: false
+      - id: check-macro-has-description
+        files: ^(macros/).*$
+
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 2.3.5
+    hooks:
+      - id: sqlfluff-fix
+        args:
+          [--config, "dbt_proj_03/conf_local/.sqlfluff", --show-lint-violations]
+        additional_dependencies:
+          ["dbt-core==1.8.3", "dbt-postgres==1.8.2", "sqlfluff-templater-dbt"]
