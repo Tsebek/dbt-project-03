@@ -45,7 +45,11 @@ jobs:
       #   run: echo "DBT_PROFILES_DIR=$(pwd)/dbt_proj_03" >> $GITHUB_ENV
 
       - name: Run dbt compile
-        run: dbt compile --profiles-dir ./dbt_proj_03/conf_local/ --profile dbt_proj_03
+        run: |
+          cd dbt_proj_03
+          dbt compile --profiles-dir ./conf_local/ --profile dbt_proj_03
 
       - name: Run pre-commit
-        run: pre-commit run --config pre-commit-pr-config.yml --all-files
+        run: |
+          cd ../dbt-project-03
+          pre-commit run --config pre-commit-pr-config.yml --all-files
