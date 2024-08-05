@@ -50,4 +50,6 @@ jobs:
           dbt compile --profiles-dir ./conf_local/ --profile dbt_proj_03
 
       - name: Run pre-commit
-        run: pre-commit run --config pre-commit-pr-config.yml --all-files
+        run: |
+          cd ..
+          pre-commit run --config pre-commit-pr-config.yml --all-files
