@@ -41,15 +41,11 @@ jobs:
           echo "DBT_ENV_SECRET_PASSWORD=${{ secrets.DBT_ENV_SECRET_PASSWORD }}" >> $GITHUB_ENV
           echo "DBT_ENV_SECRET_DBNAME=${{ secrets.DBT_ENV_SECRET_DBNAME }}" >> $GITHUB_ENV
 
-      - name: Set DBT_PROFILES_DIR
-        run: echo "DBT_PROFILES_DIR=$(pwd)/dbt_proj_03" >> $GITHUB_ENV
+      # - name: Set DBT_PROFILES_DIR
+      #   run: echo "DBT_PROFILES_DIR=$(pwd)/dbt_proj_03" >> $GITHUB_ENV
 
       - name: Run dbt compile
-        run: |
-          cd dbt_proj_03
-          dbt compile --profiles-dir ./conf_local/ --profile dbt_proj_03
+        run: dbt compile --profiles-dir ./dbt_proj_03/conf_local/ --profile dbt_proj_03
 
       - name: Run pre-commit
-        run: |
-          cd ..
-          pre-commit run --config pre-commit-pr-config.yml --all-files
+        run: pre-commit run --config pre-commit-pr-config.yml --all-files
