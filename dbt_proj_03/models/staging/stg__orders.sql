@@ -1,7 +1,7 @@
 -- stg__orders.sql
 -- import raw_superstore
-WITH raw_superstore AS (
-    SELECT
+with raw_superstore as (
+    select
         row_id,
         order_id,
         order_date,
@@ -23,11 +23,11 @@ WITH raw_superstore AS (
         quantity,
         discount,
         profit
-    FROM {{ source('raw', 'superstore') }}
-    WHERE _file = 'superstore/supestore_orders.csv'
+    from {{ source('raw', 'superstore') }}
+    where _file = 'superstore/supestore_orders.csv'
 )
 
-SELECT
+select
     row_id,
     order_id,
     order_date,
@@ -39,17 +39,17 @@ SELECT
     country,
     city,
     state,
-    CASE
-        WHEN city = 'Burlington' AND postal_code IS NULL THEN '05401'
-        ELSE postal_code
-    END AS postal_code, -- clean piece of data
-    region,
+    region, -- clean piece of data
     product_id,
-    category AS product_category,
-    sub_category AS product_subcategory,
+    category as product_category,
+    sub_category as product_subcategory,
     product_name,
     sales,
     quantity,
     discount,
-    profit
-FROM raw_superstore
+    profit,
+    case
+        when city = 'Burlington' and postal_code is NULL then '05401'
+        else postal_code
+    end as postal_code
+from raw_superstore

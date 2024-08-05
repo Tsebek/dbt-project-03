@@ -1,14 +1,14 @@
 -- stg__returns.sql
 -- import raw_superstore
-WITH raw_superstore AS (
-    SELECT
+with raw_superstore as (
+    select
         returned,
         order_id
-    FROM {{ source('raw', 'superstore') }}
-    WHERE _file = 'superstore/supestore_returns.csv'
+    from {{ source('raw', 'superstore') }}
+    where _file = 'superstore/supestore_returns.csv'
 )
 
-SELECT
+select
     order_id,
-    coalesce(returned = 'Yes', FALSE) AS returned
-FROM raw_superstore
+    coalesce(returned = 'Yes', FALSE) as returned
+from raw_superstore

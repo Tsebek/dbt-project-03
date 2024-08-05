@@ -8,4 +8,4 @@ sources:
         identifier: superstore
         loaded_at_field: _fivetran_synced
         freshness:
-          warn_after: {count: 6, period: hour}
+          warn_after: { count: 6, period: hour }

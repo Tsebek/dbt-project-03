@@ -1,14 +1,14 @@
 -- stg__people.sql
 -- import raw_superstore
-WITH raw_superstore AS (
-    SELECT
+with raw_superstore as (
+    select
         person,
         region
-    FROM {{ source('raw', 'superstore') }}
-    WHERE _file = 'superstore/supestore_people.csv'
+    from {{ source('raw', 'superstore') }}
+    where _file = 'superstore/supestore_people.csv'
 )
 
-SELECT
-    person AS manager_name,
+select
+    person as manager_name,
     region
-FROM raw_superstore
+from raw_superstore
